@@ -12,7 +12,7 @@ The cost: Nov-Dec follow the winter tariff pattern, and October does not. The 90
 
 ## Same-block measurements are excluded, and the leak is measured
 
-Reactive energy, power factor and CO2 are measured in the same 15 minutes as the demand being predicted. CO2 is demand × 0.00045 rounded to two decimals, and the lagging power factor is computed exactly from kWh and kVArh. With them and a random split, gradient boosting reaches R² 0.998. That is the figure to beat in most write-ups of this dataset, and it is not a forecast. The test `test_features_never_see_the_block_being_forecast` changes demand after the forecast origin and checks that no feature moves.
+Reactive energy, power factor and CO2 are measured in the same 15 minutes as the demand being predicted. CO2 is demand × 0.00046 rounded to two decimals, and the lagging power factor is computed exactly from kWh and kVArh. With them and a random split, gradient boosting reaches R² 0.998. That is the figure to beat in most write-ups of this dataset, and it is not a forecast. The test `test_features_never_see_the_block_being_forecast` changes demand after the forecast origin and checks that no feature moves.
 
 ## Load_Type is allowed
 

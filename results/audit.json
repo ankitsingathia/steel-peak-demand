@@ -1,0 +1,68 @@
+{
+  "midnight": {
+    "midnight_rows": 365,
+    "mean_jump_to_file_neighbours_kwh": 1.2751923076923077,
+    "mean_jump_to_same_date_0015_kwh": 4.158461538461538
+  },
+  "co2": {
+    "tco2_per_kwh_median": 0.00045885591924135825,
+    "corr_with_kwh": 0.9881797716789609,
+    "distinct_values": 8
+  },
+  "tariff_patterns": [
+    {
+      "days": 208,
+      "maximum_band_blocks": 24,
+      "medium_band_blocks": 32,
+      "months": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ]
+    },
+    {
+      "days": 95,
+      "maximum_band_blocks": 24,
+      "medium_band_blocks": 32,
+      "months": [
+        1,
+        2,
+        11,
+        12
+      ]
+    },
+    {
+      "days": 62,
+      "maximum_band_blocks": 0,
+      "medium_band_blocks": 0,
+      "months": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    }
+  ],
+  "peaks_full_year": {
+    "limit_kw": 403.36,
+    "episodes": 882,
+    "share_single_block": 0.6156462585034014,
+    "median_overshoot_kw": 50.68000000000001,
+    "p90_overshoot_kw": 124.62399999999994,
+    "share_already_above_90pct_one_hour_before": 0.3707482993197279,
+    "kva_over_kw_at_peaks_median": 1.0906888577952023
+  }
+}

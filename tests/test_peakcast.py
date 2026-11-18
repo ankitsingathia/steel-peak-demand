@@ -81,7 +81,7 @@ def test_co2_is_a_rescaled_copy_of_the_target():
     d = data.load(RAW)
     busy = d["kwh"] > 20
     ratio = (d["co2"][busy] / d["kwh"][busy]).median()
-    assert ratio == pytest.approx(0.00045, rel=0.02)
+    assert ratio == pytest.approx(0.00046, rel=0.02)
     assert np.corrcoef(d["co2"], d["kwh"])[0, 1] > 0.98
 
 
