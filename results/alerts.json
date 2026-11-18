@@ -1,107 +1,237 @@
 {
-  "limit_kw": 403.36,
-  "test_origins": 5853,
-  "rules": {
-    "operator_90pct_now": {
-      "exceedance_episodes": 78,
-      "caught": 52,
-      "recall": 0.6666666666666666,
-      "median_lead_min": 52.5,
-      "false_alert_episodes": 63,
-      "false_alerts_per_week": 7.233213736545361,
-      "alert_share": 0.04442166410387835,
-      "false_alerts_within_10pct_of_limit": 0.4126984126984127
-    },
-    "point_forecast": {
-      "exceedance_episodes": 78,
-      "caught": 47,
-      "recall": 0.6025641025641025,
-      "median_lead_min": 60.0,
-      "false_alert_episodes": 25,
-      "false_alerts_per_week": 2.8703229113275244,
-      "alert_share": 0.035366478728856995,
-      "false_alerts_within_10pct_of_limit": 0.44
-    },
-    "upper_bound_80": {
-      "exceedance_episodes": 78,
-      "caught": 73,
-      "recall": 0.9358974358974359,
-      "median_lead_min": 60.0,
-      "false_alert_episodes": 101,
-      "false_alerts_per_week": 11.596104561763198,
-      "alert_share": 0.08252178370066633,
-      "false_alerts_within_10pct_of_limit": 0.2871287128712871
-    },
-    "upper_bound_90": {
-      "exceedance_episodes": 78,
-      "caught": 77,
-      "recall": 0.9871794871794872,
-      "median_lead_min": 60.0,
-      "false_alert_episodes": 170,
-      "false_alerts_per_week": 19.518195797027165,
-      "alert_share": 0.17119425935417734,
-      "false_alerts_within_10pct_of_limit": 0.18823529411764706
-    },
-    "upper_bound_95": {
-      "exceedance_episodes": 78,
-      "caught": 78,
-      "recall": 1.0,
-      "median_lead_min": 60.0,
-      "false_alert_episodes": 166,
-      "false_alerts_per_week": 19.058944131214762,
-      "alert_share": 0.2521783700666325,
-      "false_alerts_within_10pct_of_limit": 0.18674698795180722
-    }
-  },
-  "coverage": {
-    "80": {
-      "h1": 0.783,
-      "h2": 0.705,
-      "h3": 0.754,
-      "h4": 0.694
-    },
-    "90": {
-      "h1": 0.908,
-      "h2": 0.917,
-      "h3": 0.907,
-      "h4": 0.917
-    },
-    "95": {
-      "h1": 0.963,
-      "h2": 0.958,
-      "h3": 0.959,
-      "h4": 0.953
-    }
-  },
-  "monthly_peak_if_caught_shaved": {
-    "operator_90pct_now": {
-      "11": {
-        "actual_kw": 628.72,
-        "shaved_kw": 628.72
+  "p95": {
+    "limit_kw": 403.36,
+    "test_origins": 5853,
+    "rules": {
+      "operator_90pct_now": {
+        "exceedance_episodes": 78,
+        "caught": 52,
+        "recall": 0.6666666666666666,
+        "median_lead_min": 52.5,
+        "false_alert_episodes": 63,
+        "false_alerts_per_week": 7.233213736545361,
+        "alert_share": 0.04442166410387835,
+        "false_alerts_within_10pct_of_limit": 0.4126984126984127
       },
-      "12": {
-        "actual_kw": 596.72,
-        "shaved_kw": 563.2
+      "point_forecast": {
+        "exceedance_episodes": 78,
+        "caught": 47,
+        "recall": 0.6025641025641025,
+        "median_lead_min": 60.0,
+        "false_alert_episodes": 25,
+        "false_alerts_per_week": 2.8703229113275244,
+        "alert_share": 0.035366478728856995,
+        "false_alerts_within_10pct_of_limit": 0.44
+      },
+      "upper_bound_80": {
+        "exceedance_episodes": 78,
+        "caught": 73,
+        "recall": 0.9358974358974359,
+        "median_lead_min": 60.0,
+        "false_alert_episodes": 101,
+        "false_alerts_per_week": 11.596104561763198,
+        "alert_share": 0.08252178370066633,
+        "false_alerts_within_10pct_of_limit": 0.2871287128712871
+      },
+      "upper_bound_90": {
+        "exceedance_episodes": 78,
+        "caught": 77,
+        "recall": 0.9871794871794872,
+        "median_lead_min": 60.0,
+        "false_alert_episodes": 170,
+        "false_alerts_per_week": 19.518195797027165,
+        "alert_share": 0.17119425935417734,
+        "false_alerts_within_10pct_of_limit": 0.18823529411764706
+      },
+      "upper_bound_95": {
+        "exceedance_episodes": 78,
+        "caught": 78,
+        "recall": 1.0,
+        "median_lead_min": 60.0,
+        "false_alert_episodes": 166,
+        "false_alerts_per_week": 19.058944131214762,
+        "alert_share": 0.2521783700666325,
+        "false_alerts_within_10pct_of_limit": 0.18674698795180722
       }
     },
-    "point_forecast": {
-      "11": {
-        "actual_kw": 628.72,
-        "shaved_kw": 628.72
+    "coverage": {
+      "80": {
+        "h1": 0.783,
+        "h2": 0.705,
+        "h3": 0.754,
+        "h4": 0.694
       },
-      "12": {
-        "actual_kw": 596.72,
-        "shaved_kw": 563.2
+      "90": {
+        "h1": 0.908,
+        "h2": 0.917,
+        "h3": 0.907,
+        "h4": 0.917
+      },
+      "95": {
+        "h1": 0.963,
+        "h2": 0.958,
+        "h3": 0.959,
+        "h4": 0.953
       }
     },
-    "upper_bound_80": {
-      "11": {
-        "actual_kw": 628.72,
-        "shaved_kw": 482.56
+    "monthly_peak_if_caught_shaved": {
+      "operator_90pct_now": {
+        "11": {
+          "actual_kw": 628.72,
+          "shaved_kw": 628.72
+        },
+        "12": {
+          "actual_kw": 596.72,
+          "shaved_kw": 563.2
+        }
       },
-      "12": {
-        "actual_kw": 596.72,
-        "shaved_kw": 454.04
+      "point_forecast": {
+        "11": {
+          "actual_kw": 628.72,
+          "shaved_kw": 628.72
+        },
+        "12": {
+          "actual_kw": 596.72,
+          "shaved_kw": 563.2
+        }
+      },
+      "upper_bound_80": {
+        "11": {
+          "actual_kw": 628.72,
+          "shaved_kw": 482.56
+        },
+        "12": {
+          "actual_kw": 596.72,
+          "shaved_kw": 454.04
+        }
+      },
+      "upper_bound_90": {
+        "11": {
+          "actual_kw": 628.72,
+          "shaved_kw": 436.32
+        },
+        "12": {
+          "actual_kw": 596.72,
+          "shaved_kw": 403.36
+        }
+      }
+    }
+  },
+  "p99": {
+    "limit_kw": 493.34880000000004,
+    "test_origins": 5853,
+    "rules": {
+      "operator_90pct_now": {
+        "exceedance_episodes": 34,
+        "caught": 24,
+        "recall": 0.7058823529411765,
+        "median_lead_min": 45.0,
+        "false_alert_episodes": 47,
+        "false_alerts_per_week": 5.396207073295746,
+        "alert_share": 0.016743550316077226,
+        "false_alerts_within_10pct_of_limit": 0.48936170212765956
+      },
+      "point_forecast": {
+        "exceedance_episodes": 34,
+        "caught": 0,
+        "recall": 0.0,
+        "median_lead_min": 0.0,
+        "false_alert_episodes": 0,
+        "false_alerts_per_week": 0.0,
+        "alert_share": 0.0,
+        "false_alerts_within_10pct_of_limit": NaN
+      },
+      "upper_bound_80": {
+        "exceedance_episodes": 34,
+        "caught": 22,
+        "recall": 0.6470588235294118,
+        "median_lead_min": 60.0,
+        "false_alert_episodes": 32,
+        "false_alerts_per_week": 3.674013326499231,
+        "alert_share": 0.019477191184008202,
+        "false_alerts_within_10pct_of_limit": 0.5
+      },
+      "upper_bound_90": {
+        "exceedance_episodes": 34,
+        "caught": 33,
+        "recall": 0.9705882352941176,
+        "median_lead_min": 60.0,
+        "false_alert_episodes": 59,
+        "false_alerts_per_week": 6.773962070732957,
+        "alert_share": 0.0451050743208611,
+        "false_alerts_within_10pct_of_limit": 0.4406779661016949
+      },
+      "upper_bound_95": {
+        "exceedance_episodes": 34,
+        "caught": 33,
+        "recall": 0.9705882352941176,
+        "median_lead_min": 60.0,
+        "false_alert_episodes": 104,
+        "false_alerts_per_week": 11.9405433111225,
+        "alert_share": 0.07124551512045105,
+        "false_alerts_within_10pct_of_limit": 0.2980769230769231
+      }
+    },
+    "coverage": {
+      "80": {
+        "h1": 0.783,
+        "h2": 0.705,
+        "h3": 0.754,
+        "h4": 0.694
+      },
+      "90": {
+        "h1": 0.908,
+        "h2": 0.917,
+        "h3": 0.907,
+        "h4": 0.917
+      },
+      "95": {
+        "h1": 0.963,
+        "h2": 0.958,
+        "h3": 0.959,
+        "h4": 0.953
+      }
+    },
+    "monthly_peak_if_caught_shaved": {
+      "operator_90pct_now": {
+        "11": {
+          "actual_kw": 628.72,
+          "shaved_kw": 521.84
+        },
+        "12": {
+          "actual_kw": 596.72,
+          "shaved_kw": 563.2
+        }
+      },
+      "point_forecast": {
+        "11": {
+          "actual_kw": 628.72,
+          "shaved_kw": 628.72
+        },
+        "12": {
+          "actual_kw": 596.72,
+          "shaved_kw": 596.72
+        }
+      },
+      "upper_bound_80": {
+        "11": {
+          "actual_kw": 628.72,
+          "shaved_kw": 533.68
+        },
+        "12": {
+          "actual_kw": 596.72,
+          "shaved_kw": 596.72
+        }
+      },
+      "upper_bound_90": {
+        "11": {
+          "actual_kw": 628.72,
+          "shaved_kw": 493.34880000000004
+        },
+        "12": {
+          "actual_kw": 596.72,
+          "shaved_kw": 563.2
+        }
       }
     }
   }

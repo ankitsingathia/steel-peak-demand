@@ -50,9 +50,21 @@ def forecasts(d: pd.DataFrame):
     return out
 
 
+LIMIT_PCTS = (95, 99)  # demand limit = this percentile of Jan-Sep demand; 95 is the main setting
+
+
 def main():
-    d, limit = load()
+    d, _ = load()
+    train, _, _ = data.split(d)
     fc = forecasts(d)
+    out = {}
+    for pct in LIMIT_PCTS:
+        limit = float(np.percentile(d["kw"][train], pct))
+        out[f"p{pct}"] = evaluate(d, fc, limit)
+    (ROOT / "results/alerts.json").write_text(json.dumps(out, indent=2))
+
+
+def evaluate(d, fc, limit):
     origins = fc[HORIZONS[-1]]["p"].index  # origins with all four horizons inside the test period
     for h in HORIZONS:
         origins = origins.intersection(fc[h]["p"].index)
@@ -73,6 +85,7 @@ def main():
         point |= (fc[h]["p"].reindex(origins) > limit).to_numpy()
     res["rules"]["point_forecast"] = score(point)
 
+    chosen = {}
     for level in LEVELS:
         upper = np.zeros(len(origins), bool)
         cover = []
@@ -83,21 +96,21 @@ def main():
             upper |= (p.to_numpy() + width) > limit
             cover.append(float((np.abs(y.to_numpy() - p.to_numpy()) <= width).mean()))
         res["rules"][f"upper_bound_{int(level * 100)}"] = score(upper)
-        if level == 0.8:
-            chosen = upper
+        chosen[level] = upper
         res["coverage"][f"{int(level * 100)}"] = {f"h{h}": round(c, 3) for h, c in zip(HORIZONS, cover)}
 
     res["monthly_peak_if_caught_shaved"] = {
         name: alerts.shaved_monthly_peak(kwv, month, over, alerts.caught_blocks(a, over), limit)
-        for name, a in (("operator_90pct_now", operator), ("point_forecast", point), ("upper_bound_80", chosen))
+        for name, a in (("operator_90pct_now", operator), ("point_forecast", point),
+                        ("upper_bound_80", chosen[0.8]), ("upper_bound_90", chosen[0.9]))
     }
-    (ROOT / "results/alerts.json").write_text(json.dumps(res, indent=2))
     print(f"limit {limit:.0f} kW, {res['test_origins']} test origins")
     for name, s in res["rules"].items():
         print(f"{name:20s} caught {s['caught']}/{s['exceedance_episodes']}  median lead {s['median_lead_min']:.0f} min  "
               f"false alerts {s['false_alert_episodes']} ({s['false_alerts_per_week']:.1f}/week, {s['false_alerts_within_10pct_of_limit']:.0%} near misses)  in alert {s['alert_share']:.1%}")
     print("monthly peak if caught episodes were held at the limit:", json.dumps(res["monthly_peak_if_caught_shaved"]))
     print("coverage", res["coverage"])
+    return res
 
 
 if __name__ == "__main__":
