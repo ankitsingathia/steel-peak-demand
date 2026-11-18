@@ -1,10 +1,14 @@
 """Sequence models: an LSTM and a small Transformer encoder.
 
-Both read the last 48 hours (192 blocks) of demand and calendar, and forecast
-the next four blocks at once. 48 hours keeps the same block yesterday inside
-the window for every horizon. The calendar of the four target blocks (their
-tariff band and time of day) is added after the encoder, so a ramp at a band
-change, like Light to Medium at 09:00, can be anticipated.
+Both read the last 8 hours (32 blocks) of demand and calendar, and forecast
+the next four blocks at once. Daily and weekly shape comes in as known values
+rather than a longer window: for each target block, its demand one day and one
+week earlier, the same lags gradient boosting gets. A 48-hour window took
+about a minute per epoch on a laptop CPU, for the same information.
+
+The calendar of the four target blocks (time of day, tariff band, off-day) is
+added after the encoder, so a ramp at a band change, like Light to Medium at
+09:00, can be anticipated.
 """
 
 from __future__ import annotations
@@ -16,8 +20,10 @@ from torch import nn
 
 from .features import calendar
 
-WINDOW, HORIZON = 192, 4
+WINDOW, HORIZON = 32, 4
+DAY, WEEK = 96, 672
 STEP_FEATS = ["blk_sin", "blk_cos", "band", "off_day", "weekend"]
+C_PER_STEP = 6  # per target block: 4 calendar values + demand a day and a week earlier
 
 
 def arrays(d: pd.DataFrame, mu: float, sd: float):
@@ -32,11 +38,12 @@ def arrays(d: pd.DataFrame, mu: float, sd: float):
 
 
 def samples(step, tgt, z, origins: np.ndarray):
-    """origins: positions t (block ends). Input rows t-191..t; targets t+1..t+4."""
+    """origins: positions t (block ends). Input rows t-31..t; targets t+1..t+4."""
     idx = origins[:, None] + np.arange(-WINDOW + 1, 1)[None, :]
     x = step[idx]
     fut = origins[:, None] + np.arange(1, HORIZON + 1)[None, :]
-    c = tgt[fut].reshape(len(origins), -1)
+    lags = np.stack([z[fut - DAY], z[fut - WEEK]], axis=2)  # known: at least a day old
+    c = np.concatenate([tgt[fut], lags], axis=2).reshape(len(origins), -1)
     y = z[fut]
     return torch.from_numpy(x), torch.from_numpy(c), torch.from_numpy(y)
 
@@ -45,7 +52,7 @@ class LSTMForecaster(nn.Module):
     def __init__(self, n_in=6, hidden=64):
         super().__init__()
         self.rnn = nn.LSTM(n_in, hidden, batch_first=True)
-        self.head = nn.Sequential(nn.Linear(hidden + 4 * HORIZON, 64), nn.ReLU(), nn.Linear(64, HORIZON))
+        self.head = nn.Sequential(nn.Linear(hidden + C_PER_STEP * HORIZON, 64), nn.ReLU(), nn.Linear(64, HORIZON))
 
     def forward(self, x, c):
         _, (h, _) = self.rnn(x)
@@ -59,7 +66,7 @@ class TransformerForecaster(nn.Module):
         self.pos = nn.Parameter(torch.zeros(1, WINDOW, d))
         enc = nn.TransformerEncoderLayer(d, heads, dim_feedforward=64, dropout=0.1, batch_first=True)
         self.enc = nn.TransformerEncoder(enc, layers)
-        self.head = nn.Sequential(nn.Linear(2 * d + 4 * HORIZON, 64), nn.ReLU(), nn.Linear(64, HORIZON))
+        self.head = nn.Sequential(nn.Linear(2 * d + C_PER_STEP * HORIZON, 64), nn.ReLU(), nn.Linear(64, HORIZON))
 
     def forward(self, x, c):
         e = self.enc(self.inp(x) + self.pos)
@@ -67,7 +74,7 @@ class TransformerForecaster(nn.Module):
         return self.head(torch.cat([summary, c], dim=1))
 
 
-def fit(model, train, val, seed=0, epochs=30, batch=256, patience=4, lr=2e-3):
+def fit(model, train, val, seed=0, epochs=40, batch=256, patience=5, lr=2e-3):
     """Adam on MSE; stops when validation MSE has not improved for `patience` epochs."""
     torch.manual_seed(seed)
     g = torch.Generator().manual_seed(seed)

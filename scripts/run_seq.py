@@ -34,7 +34,7 @@ def origin_positions(d, mask):
     """Positions t whose window and all four targets lie inside the masked period."""
     pos = np.flatnonzero(mask)
     lo, hi = pos.min(), pos.max()
-    t = np.arange(max(lo, seq.WINDOW - 1), hi - seq.HORIZON + 1)
+    t = np.arange(max(lo, seq.WEEK, seq.WINDOW - 1), hi - seq.HORIZON + 1)
     return t
 
 

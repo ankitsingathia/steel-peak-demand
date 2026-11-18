@@ -45,3 +45,11 @@ Errors at night are a few kW, and errors in the maximum-load band are tens. One 
 ## "Shaved peak" is an upper bound on the benefit, and is labelled so
 
 The monthly-peak figure assumes every warned-about crossing could be held at the limit by deferring load. Real plants can defer some loads and not others. The figure answers "what does the alert make possible", not "what would have happened". No rupee value is given: the dataset is from a Korean plant, and any tariff would be an assumption.
+
+## Sequence models: an 8-hour window plus known lags, not a 48-hour window
+
+The first version gave the LSTM and Transformer the last 48 hours, so the same block yesterday sat inside the window. On a laptop CPU that took 52–62 seconds per epoch, which works out to hours for three seeds of two models. The information that mattered from those 48 hours was mostly two numbers per target block: its demand a day earlier and a week earlier. These now go in directly, next to the target block's calendar, and the encoder reads only the last 8 hours, where the short-term dynamics are. That's 6–9 seconds per epoch. Gradient boosting gets the same two lags, so the comparison is still like for like.
+
+## Sequence models: three seeds, early stopping on October
+
+A single run of a small neural network can land a few percent better or worse by chance. Each model is trained with three seeds, and the README gives the range, not the best seed. Training stops when October's error hasn't improved for five epochs, and the best October weights are kept. October is never used to fit weights.
