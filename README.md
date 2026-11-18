@@ -143,8 +143,9 @@ There is no rupee figure. The plant is Korean, and an Indian tariff applied to i
 
 ```bash
 pip install -r requirements.txt            # plus torch for the LSTM and Transformer
+mkdir -p data/raw
 curl -L -o data/raw/steel.zip "https://archive.ics.uci.edu/static/public/851/steel+industry+energy+consumption.zip"
-cd data/raw && tar -xf steel.zip && cd ../..
+python -m zipfile -e data/raw/steel.zip data/raw/
 python -m pytest -q
 python scripts/run_baselines.py            # leak, baselines, gradient boosting
 python scripts/run_alerts.py               # conformal intervals and the alert at both limits
@@ -152,6 +153,8 @@ python scripts/run_seq.py                  # LSTM and Transformer, 3 seeds (abou
 python scripts/plot_week.py
 python scripts/audit.py                    # the data findings as numbers
 ```
+
+The published numbers come from scikit-learn 1.6.1, pandas 2.2.3, NumPy 2.2.2 and PyTorch 2.6.0 (CPU). On a clean install with pandas 3.1 and the latest scikit-learn, gradient boosting lands within a few tenths of a kW of them (15.8 and 25.5 kW against 16.0 and 25.7), and the leak result is unchanged.
 
 ## Limits
 

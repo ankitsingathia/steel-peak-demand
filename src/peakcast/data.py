@@ -58,7 +58,7 @@ def load(path: Path) -> pd.DataFrame:
     ).sort_index()
     if d.index.has_duplicates:
         raise ValueError("duplicate block timestamps after the midnight fix")
-    if not (np.diff(d.index.asi8) == BLOCK.value).all():
+    if not ((d.index[1:] - d.index[:-1]) == BLOCK).all():  # unit-safe across pandas 2 and 3
         raise ValueError("blocks are not on a regular 15-minute grid")
     d["kw"] = d["kwh"] * 4  # average demand over the block
     return d

@@ -29,8 +29,8 @@ def calendar(index: pd.DatetimeIndex, load_type: pd.Series) -> pd.DataFrame:
             "blk": blk,
             "blk_sin": np.sin(2 * np.pi * blk / PER_DAY),
             "blk_cos": np.cos(2 * np.pi * blk / PER_DAY),
-            "dow": start.dayofweek,
-            "weekend": (start.dayofweek >= 5).astype(int),
+            "dow": start.day_of_week,
+            "weekend": (start.day_of_week >= 5).astype(int),
             "band": load_type.map(BANDS).to_numpy(),
             "off_day": day_light.astype(int),  # Sunday or holiday in the tariff calendar
             "winter": start.month.isin([11, 12, 1, 2]).astype(int),
